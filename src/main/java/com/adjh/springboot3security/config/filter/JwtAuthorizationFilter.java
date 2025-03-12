@@ -3,7 +3,6 @@ package com.adjh.springboot3security.config.filter;
 import com.adjh.springboot3security.common.utils.TokenUtils;
 import com.adjh.springboot3security.model.dto.UserDto;
 import com.adjh.springboot3security.model.dto.ValidTokenDto;
-import com.adjh.springboot3security.service.TokenBlackListService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -37,9 +36,6 @@ import java.util.Map;
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private TokenBlackListService tokenBlackListService;
-
     private static final String HTTP_METHOD_OPTIONS = "OPTIONS";
     private static final String ACCESS_TOKEN_HEADER_KEY = "Authorization";
     private static final String REFRESH_TOKEN_HEADER_KEY = "x-refresh-token";
@@ -71,11 +67,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
                 String paramAccessToken = TokenUtils.getHeaderToToken(accessTokenHeader);
                 String paramRefreshToken = TokenUtils.getHeaderToToken(refreshTokenHeader);
-
-                // [STEP3] 블랙리스트에 포함된 토큰으로 접근하는 경우, 이를 막아줍니다.
-                if (tokenBlackListService.isContainToken(paramAccessToken)) {
-                    throw new Exception("<< 경고 >>만료된 토큰으로 접근하려합니다!!!");
-                }
 
                 // [STEP4] 접근 토큰(Access Token)의 유효성을 체크합니다.
                 ValidTokenDto accTokenValidDto = TokenUtils.isValidToken(paramAccessToken);

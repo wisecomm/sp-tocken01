@@ -30,5 +30,15 @@ LRANGE tokenBlackList 0 -1
 
 # 확인 사항
 
+- 스프링 테스트 로직 확인 ...
 - token 타임 아웃 확인
 - radis 디스크 저장 장소 및 지우는 시간 확인
+- access token 타임아웃 시 refress 토컨 가지고 로그인 시 재 할당 확인
+
+# 로그인 token 테스트
+
+- acc 받고 타임아웃 후 --> ref 채크 (성공 시 : acc, ref 생성, 실패 시 : 재로그인 요청 )
+- acc 받고 또 로그인 후 acc 받음 : 앞 acc 는 유효 ???
+
+- radis 삭제 ( 로그아웃 안하는 경우가 거이다임 ㅎㅎㅎ)
+  : 그러나 삭제 루틴은 확인

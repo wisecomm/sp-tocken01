@@ -1,7 +1,6 @@
 package com.adjh.springboot3security.config.handler;
 
 import com.adjh.springboot3security.common.utils.TokenUtils;
-import com.adjh.springboot3security.service.TokenBlackListService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,9 +27,6 @@ import java.util.Map;
 @Service
 public class CustomLogoutHandler implements LogoutHandler {
 
-    @Autowired
-    private TokenBlackListService tokenBlackListService;
-
     /**
      * 로그아웃 엔드포인트로 호출되면 이에 대해 처리합니다.
      *
@@ -48,18 +44,6 @@ public class CustomLogoutHandler implements LogoutHandler {
 
         // [STEP2-1] 토큰이 존재하는 경우
         if (headerToken != null) {
-
-            // [STEP3] 실제 토큰 값을 확인합니다.
-            String token = TokenUtils.getHeaderToToken(headerToken);
-
-            // [STEP4] Redis 내에 토큰이 존재하지 않는 경우
-            if (!tokenBlackListService.isContainToken(token)) {
-
-                // [STEP5] BlackList를 추가합니다.
-                tokenBlackListService.addTokenToList(token);
-                List<Object> blackList = tokenBlackListService.getTokenBlackList();      // BlackList를 조회합니다.
-                log.debug("[+] blackList : " + blackList);
-            }
         }
         // [STEP2-2] 토큰이 존재하지 않는 경우
         else {

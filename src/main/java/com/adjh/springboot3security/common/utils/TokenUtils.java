@@ -165,8 +165,6 @@ public class TokenUtils {
      */
 
     private static Claims getTokenToClaims(String token) {
-        System.out.println("확인111  : " + token);
-        System.out.println("확인222  : " + JWT_SECRET_KEY);
         return Jwts.parser()
                 .verifyWith(JWT_SECRET_KEY)
                 .build()
